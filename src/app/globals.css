@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #f8fafc;
+  --color-foreground: #0f172a;
+  --color-card: #ffffff;
+  --color-muted: #64748b;
+  --color-border: #e2e8f0;
+
+  --color-brand-50: #ecfdf5;
+  --color-brand-100: #d1fae5;
+  --color-brand-200: #a7f3d0;
+  --color-brand-300: #6ee7b7;
+  --color-brand-400: #34d399;
+  --color-brand-500: #10b981;
+  --color-brand-600: #059669;
+  --color-brand-700: #047857;
+  --color-brand-800: #065f46;
+  --color-brand-900: #064e3b;
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-brand-600);
+  color: #fff;
+}
+
+/* ------------------------------------------------------------------ */
+/* Uiverse.io components (MIT) adapted to the HorizonActivity theme    */
+/* ------------------------------------------------------------------ */
+
+/* Button — "Fill up" hover by KhaledMatalkah (uiverse.io) */
+.btn-fill-up {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 2px solid var(--color-brand-600);
+  background: transparent;
+  color: var(--color-brand-700);
+  border-radius: 9999px;
+  transition: color 0.4s ease, border-color 0.4s ease;
+}
+.btn-fill-up::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--color-brand-600);
+  transition: left 0.45s ease-in-out;
+  z-index: -1;
+}
+.btn-fill-up:hover::before {
+  left: 0;
+}
+.btn-fill-up:hover {
+  color: #fff;
+}
+
+/* Card — hover lift with brand accent underline (uiverse card hover pattern) */
+.u-card {
+  position: relative;
+  border-color: #cbd5e1;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.06), 0 4px 12px -2px rgb(15 23 42 / 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.u-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-brand-300);
+  box-shadow: 0 16px 32px -16px rgba(5, 150, 105, 0.35);
+}

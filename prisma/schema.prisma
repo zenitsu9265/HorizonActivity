@@ -1,0 +1,131 @@
+generator client {
+  provider   = "prisma-client"
+  output     = "../src/generated/prisma"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id            String        @id @default(cuid())
+  name          String
+  email         String        @unique
+  passwordHash  String
+  phone         String?
+  role          String        @default("USER")
+  walletBalance Int           @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  bookings      Booking[]
+  cardOrders    CardOrder[]
+  transactions  Transaction[]
+
+  @@map("users")
+}
+
+model Place {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  city        String
+  state       String?
+  country     String     @default("India")
+  description String
+  imageUrl    String
+  featured    Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  activities  Activity[]
+
+  @@map("places")
+}
+
+model Activity {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  category    String
+  description String
+  price       Int
+  imageUrl    String
+  duration    String?
+  minAge      Int?
+  maxSeats    Int       @default(10)
+  featured    Boolean   @default(false)
+  placeId     String
+  place       Place     @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  bookings    Booking[]
+
+  @@map("activities")
+}
+
+model Booking {
+  id           String         @id @default(cuid())
+  bookingNumber String         @unique @default(cuid())
+  userId       String
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activityId   String
+  activity     Activity       @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  date         DateTime
+  amount       Int
+  status       String         @default("CONFIRMED")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  transactions Transaction[]
+
+  @@index([userId, status])
+  @@index([activityId, date])
+  @@map("bookings")
+}
+
+model CardPlan {
+  id        String      @id @default(cuid())
+  name      String
+  value     Int
+  price     Int
+  perks     String
+  active    Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  orders    CardOrder[]
+
+  @@map("card_plans")
+}
+
+model CardOrder {
+  id               String         @id @default(cuid())
+  orderNumber      String         @unique
+  userId           String
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cardPlanId       String?
+  cardPlan         CardPlan?      @relation(fields: [cardPlanId], references: [id], onDelete: SetNull)
+  cardValue        Int
+  amount           Int
+  razorpayOrderId  String?        @unique
+  razorpayPaymentId String?       @unique
+  status           String         @default("PENDING")
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  transactions     Transaction[]
+
+  @@index([userId, status])
+  @@map("card_orders")
+}
+
+model Transaction {
+  id          String     @id @default(cuid())
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        String
+  amount      Int
+  description String
+  bookingId   String?
+  booking     Booking?   @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  cardOrderId String?
+  cardOrder   CardOrder? @relation(fields: [cardOrderId], references: [id], onDelete: SetNull)
+  createdAt   DateTime   @default(now())
+
+  @@index([userId, createdAt])
+  @@map("transactions")
+}
