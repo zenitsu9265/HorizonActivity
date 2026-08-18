@@ -1,10 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
 import { CalendarDays, CreditCard, ShieldCheck, Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
-import { ROTATE_MS } from "@/components/hero";
+import { useAutoCarousel } from "@/hooks/use-auto-carousel";
 
 const items = [
   {
@@ -30,57 +29,8 @@ const items = [
 ];
 
 export function WhyBookSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const pausedRef = useRef(false);
-  const programmaticRef = useRef(false);
-
-  const updateActive = useCallback(() => {
-    if (programmaticRef.current) return;
-    const el = ref.current;
-    if (!el) return;
-    const card = el.querySelector<HTMLElement>("[data-card]");
-    const step = card ? card.offsetWidth + 16 : el.clientWidth;
-    setActiveIndex(Math.min(items.length - 1, Math.max(0, Math.round(el.scrollLeft / step))));
-  }, []);
-
-  const scrollToCard = useCallback((index: number) => {
-    const el = ref.current;
-    if (!el) return;
-    const card = el.querySelector<HTMLElement>("[data-card]");
-    const step = card ? card.offsetWidth + 16 : el.clientWidth;
-    programmaticRef.current = true;
-    el.scrollTo({ left: index * step, behavior: "smooth" });
-    setActiveIndex(index);
-    setTimeout(() => { programmaticRef.current = false; }, 600);
-  }, []);
-
-  const resetTimer = useCallback(() => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => {
-      if (pausedRef.current) return;
-      setActiveIndex((prev) => (prev + 1) % items.length);
-    }, ROTATE_MS);
-  }, []);
-
-  useEffect(() => {
-    updateActive();
-    const el = ref.current;
-    if (!el) return;
-    const ro = new ResizeObserver(updateActive);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [updateActive]);
-
-  useEffect(() => {
-    resetTimer();
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [resetTimer]);
-
-  useEffect(() => {
-    scrollToCard(activeIndex);
-  }, [activeIndex, scrollToCard]);
+  const { ref, activeIndex, updateActive, scrollToCard, onMouseEnter, onMouseLeave, pauseThenResume } =
+    useAutoCarousel({ itemCount: items.length });
 
   return (
     <section className="border-b border-border bg-card py-12 sm:py-16">
@@ -89,11 +39,7 @@ export function WhyBookSection() {
           Why book with HorizonActivity?
         </h2>
 
-        <div
-          className="mt-8"
-          onMouseEnter={() => { pausedRef.current = true; }}
-          onMouseLeave={() => { pausedRef.current = false; }}
-        >
+        <div className="mt-8" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
           <div
             ref={ref}
             onScroll={updateActive}
@@ -125,9 +71,8 @@ export function WhyBookSection() {
                 aria-label={`Go to feature ${i + 1}`}
                 aria-current={i === activeIndex}
                 onClick={() => {
-                  pausedRef.current = true;
+                  pauseThenResume();
                   scrollToCard(i);
-                  setTimeout(() => { pausedRef.current = false; }, 3000);
                 }}
                 className={cn(
                   "h-2 rounded-full transition-all duration-300",

@@ -9,7 +9,7 @@ import {
   CalendarDays,
   Wallet,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatINR } from "@/lib/utils";
 
 interface AccountNavProps {
   user: { name: string; email: string; role: string; walletBalance: number };
@@ -58,7 +58,7 @@ export function AccountNav({ user }: AccountNavProps) {
           <p className="text-xs text-brand-800">Wallet balance</p>
         </div>
         <p className="mt-1 text-xl font-bold text-brand-800">
-          ₹{(user.walletBalance / 100).toLocaleString("en-IN")}
+          ₹{formatINR(user.walletBalance)}
         </p>
         <p className="mt-1 text-xs text-brand-700">Use it to book any activity.</p>
       </div>

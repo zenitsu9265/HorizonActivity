@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { formatINR } from "@/lib/utils";
 import { Container, SectionHeading } from "@/components/ui/container";
 import { CardRail, RailItem } from "@/components/ui/card-rail";
 import { CardPlanCard } from "@/components/card-plan-card";
@@ -50,7 +51,7 @@ export default async function BookingCardsPage() {
         <div className="mt-8 flex items-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3">
           <Badge tone="brand">Your wallet</Badge>
           <p className="text-sm text-brand-800">
-            Balance: ₹{(user.walletBalance / 100).toLocaleString("en-IN")} — ready to spend on
+            Balance: {formatINR(user.walletBalance)} — ready to spend on
             activities.
           </p>
         </div>

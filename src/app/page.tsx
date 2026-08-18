@@ -126,11 +126,6 @@ function BookingCardsSection({
             title="Buy credit, pay less on everything"
             description="Prepaid booking cards give you store credit at a discount. Use the balance on any activity, any place."
           />
-          {/*<Link href="/booking-cards" className="shrink-0">
-            <Button variant="fillUp">
-              All card options <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>*/}
         </div>
         <div className="mt-8">
           <CardRail>
