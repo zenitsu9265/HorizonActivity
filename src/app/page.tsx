@@ -86,7 +86,7 @@ function FeaturedActivities({
             description="Handpicked experiences our explorers love the most."
           />
           <Link href="/activities" className="hidden shrink-0 items-center gap-1 text-sm font-medium text-brand-700 hover:underline sm:flex">
-            View all Activities<ArrowRight className="h-4 w-4" />
+            View all<ArrowRight className="h-4 w-4" />
           </Link>
         </div>
         <div className="mt-8">
@@ -100,7 +100,7 @@ function FeaturedActivities({
         </div>
         <div className="mt-8 text-center sm:hidden">
           <Link href="/activities">
-            <Button variant="fillUp">View all activities</Button>
+            <Button variant="fillUp">View all</Button>
           </Link>
         </div>
       </Container>
@@ -126,11 +126,11 @@ function BookingCardsSection({
             title="Buy credit, pay less on everything"
             description="Prepaid booking cards give you store credit at a discount. Use the balance on any activity, any place."
           />
-          <Link href="/booking-cards" className="shrink-0">
+          {/*<Link href="/booking-cards" className="shrink-0">
             <Button variant="fillUp">
               All card options <ArrowRight className="h-4 w-4" />
             </Button>
-          </Link>
+          </Link>*/}
         </div>
         <div className="mt-8">
           <CardRail>
@@ -165,7 +165,7 @@ function PopularPlaces({
             description="From mountain towns to beachside getaways — adventures everywhere."
           />
           <Link href="/places" className="hidden shrink-0 items-center gap-1 text-sm font-medium text-brand-700 hover:underline sm:flex">
-            View all places <ArrowRight className="h-4 w-4" />
+            View all<ArrowRight className="h-4 w-4" />
           </Link>
         </div>
         <div className="mt-8">

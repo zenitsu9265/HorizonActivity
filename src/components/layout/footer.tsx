@@ -2,36 +2,26 @@ import Link from "next/link";
 import { Mail, MapPin, Mountain, Phone } from "lucide-react";
 import { Container } from "@/components/ui/container";
 
-const sections = [
-  {
-    title: "Explore",
-    links: [
-      { href: "/activities", label: "All activities" },
-      { href: "/places", label: "Popular places" },
-      { href: "/booking-cards", label: "Booking cards" },
-      { href: "/how-it-works", label: "How it works" },
-    ],
-  },
-  {
-    title: "Account",
-    links: [
-      { href: "/account", label: "My account" },
-      { href: "/account/bookings", label: "My bookings" },
-      { href: "/account/cards", label: "My cards" },
-      { href: "/login", label: "Sign in" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { href: "/about", label: "About us" },
-      { href: "/contact", label: "Contact" },
-      { href: "/admin", label: "Admin" },
-    ],
-  },
+const exploreLinks = [
+  { href: "/activities", label: "All activities" },
+  { href: "/places", label: "Popular places" },
+  { href: "/booking-cards", label: "Booking cards" },
+  { href: "/how-it-works", label: "How it works" },
 ];
 
-export function Footer() {
+const accountLinks = [
+  { href: "/account", label: "My account" },
+  { href: "/account/bookings", label: "My bookings" },
+  { href: "/account/cards", label: "My cards" },
+  { href: "/login", label: "Sign in" },
+];
+
+const companyLinks = [
+  { href: "/about", label: "About us" },
+  { href: "/contact", label: "Contact" },
+];
+
+export function Footer({ isAdmin = false }: { isAdmin?: boolean }) {
   return (
     <footer className="border-t border-border bg-card">
       <Container className="py-12">
@@ -106,20 +96,51 @@ export function Footer() {
             </p>
           </div>
 
-          {sections.map((section) => (
-            <div key={section.title}>
-              <h3 className="text-sm font-semibold">{section.title}</h3>
-              <ul className="mt-3 space-y-2">
-                {section.links.map((link) => (
-                  <li key={link.href}>
-                    <Link href={link.href} className="text-sm text-muted hover:text-brand-700">
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div>
+            <h3 className="text-sm font-semibold">Explore</h3>
+            <ul className="mt-3 space-y-2">
+              {exploreLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm text-muted hover:text-brand-700">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold">Account</h3>
+            <ul className="mt-3 space-y-2">
+              {accountLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm text-muted hover:text-brand-700">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold">Company</h3>
+            <ul className="mt-3 space-y-2">
+              {companyLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm text-muted hover:text-brand-700">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+              {isAdmin ? (
+                <li>
+                  <Link href="/admin" className="text-sm text-muted hover:text-brand-700">
+                    Admin
+                  </Link>
+                </li>
+              ) : null}
+            </ul>
+          </div>
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-border pt-6 sm:flex-row sm:items-center">
